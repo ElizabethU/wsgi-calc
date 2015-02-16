@@ -1,4 +1,5 @@
 import re
+from decimal import *
 
 def book(book_id):
     page = """
@@ -20,16 +21,20 @@ def books():
     return '''This is all the books!''' #'\n'.join(body)
 
 def multiply(num1, num2):
-    return '''This is where the multiplication happens!!!'''
+    answer = Decimal(num1) * Decimal(num2)
+    return "Hey, you're answer is {}".format(answer)
 
 def divide(num1, num2):
-    return '''This is where the division happens!!!'''
+    answer = Decimal(num1) / Decimal(num2)
+    return "Hey, you're answer is {}".format(answer)
 
 def add(num1, num2):
-    return '''This is where the addition happens!!!'''
+    answer = Decimal(num1) + Decimal(num2)
+    return "Hey, you're answer is {}".format(answer)
 
 def subtract(num1, num2):
-    return '''This is where the subtraction happens!!!'''
+    answer = Decimal(num1) - Decimal(num2)
+    return "Hey, you're answer is {}".format(answer)
 
 def resolve_path(path):
     urls = [(r'^$', books),
