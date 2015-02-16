@@ -15,6 +15,8 @@ def multiply(num1, num2):
     return "Hey, you're answer is {}".format(answer)
 
 def divide(num1, num2):
+    if num2 == 0:
+      raise NameError
     answer = Decimal(num1) / Decimal(num2)
     return "Hey, you're answer is {}".format(answer)
 
@@ -28,10 +30,10 @@ def subtract(num1, num2):
 
 def resolve_path(path):
     urls = [(r'^$', home),
-            (r'^multiply/([\d]+)/([\d]+)$', multiply),
-            (r'^divide/([\d]+)/([\d]+)$', divide),
-            (r'^add/([\d]+)/([\d]+)$', add),
-            (r'^subtract/([\d]+)/([\d]+)$', subtract),
+            (r'^multiply/(\d+\.?\d?)/(\d+\.?\d?)$', multiply),
+            (r'^divide/(\d+\.?\d?)/(\d+\.?\d?)$', divide),
+            (r'^add/(\d+\.?\d?)/(\d+\.?\d?)$', add),
+            (r'^subtract/(\d+\.?\d?)/(\d+\.?\d?)$', subtract),
               ]
     matchpath = path.lstrip('/')
     for regexp, func in urls:
@@ -51,12 +53,8 @@ def application(environ, start_response):
         if path is None:
             raise NameError
         func, args = resolve_path(path)
-        if not func == divide and args[1] == 0:
-            body = func(*args)
-            status = "200 OK"
-        else:
-            status = "404 Not Found"
-            body = "<h1>You can't divide by zero!</h1>"
+        body = func(*args)
+        status = "200 OK"
     except NameError:
         status = "404 Not Found"
         body = "<h1>Not Found</h1>"
