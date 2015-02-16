@@ -1,24 +1,14 @@
 import re
 from decimal import *
 
-def book(book_id):
-    page = """
-This is a book detail page
-"""
-    # book = DB.title_info(book_id)
-    # if book is None:
-    #     raise NameError
-    return page #.format(**book)
-
-
-def books():
+def home():
     #all_books = DB.titles()
     #body = ['<h1>My Bookshelf</h1>', '<ul>']
     #item_template = '<li><a href="/book/{id}">{title}</a></li>'
     #for book in all_books:
     #    body.append(item_template.format(**book))
     #body.append('</ul>')
-    return '''This is all the books!''' #'\n'.join(body)
+    return '''Welcome to a trivial calculator app!''' #'\n'.join(body)
 
 def multiply(num1, num2):
     answer = Decimal(num1) * Decimal(num2)
@@ -37,8 +27,7 @@ def subtract(num1, num2):
     return "Hey, you're answer is {}".format(answer)
 
 def resolve_path(path):
-    urls = [(r'^$', books),
-            (r'^book/(id[\d]+)$', book),
+    urls = [(r'^$', home),
             (r'^multiply/([\d]+)/([\d]+)$', multiply),
             (r'^divide/([\d]+)/([\d]+)$', divide),
             (r'^add/([\d]+)/([\d]+)$', add),
@@ -62,8 +51,12 @@ def application(environ, start_response):
         if path is None:
             raise NameError
         func, args = resolve_path(path)
-        body = func(*args)
-        status = "200 OK"
+        if not func == divide and args[1] == 0:
+            body = func(*args)
+            status = "200 OK"
+        else:
+            status = "404 Not Found"
+            body = "<h1>You can't divide by zero!</h1>"
     except NameError:
         status = "404 Not Found"
         body = "<h1>Not Found</h1>"
