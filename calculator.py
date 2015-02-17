@@ -59,8 +59,12 @@ def application(environ, start_response):
         status = "404 Not Found"
         body = "<h1>Not Found</h1>"
     except Exception:
-        status = "500 Internal Server Error"
-        body = "<h1>Internal Server Error</h1>"
+        if func == divide and args[1] == 0:
+            status = "500 Internal Server Error"
+            body = "<h1>Internal Server Error</h1>"
+        else:
+            status = "404 Not Found"
+            body = "<h1>Can't divide by zero!</h1>"
     finally:
         headers.append(('Content-length', str(len(body))))
         start_response(status, headers)
