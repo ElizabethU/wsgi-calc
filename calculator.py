@@ -73,7 +73,7 @@ def application(environ, start_response):
             status = "500 Internal Server Error"
             body = "<h1>Internal Server Error</h1>"
         else:
-            status = "404 Not Found"
+            status = "400 Bad Request"
             body = "<h1>Can't divide by zero!</h1>"
     finally:
         headers.append(('Content-length', str(len(body))))
